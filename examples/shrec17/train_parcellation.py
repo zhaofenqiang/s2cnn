@@ -23,11 +23,11 @@ import importlib.machinery
 import numpy as np
 from tensorboardX import SummaryWriter
 
-writer = SummaryWriter('log/dataset64_1fold_4layer_without_dp')
+writer = SummaryWriter('log/dataset64_1fold_4layer_with_dp')
 
 batch_size = 4
 learning_rate = 0.5  
-num_workers = 1
+num_workers = 4
 wd = 0.0001
 
 class SphereSurf(torch.utils.data.Dataset):
@@ -137,8 +137,8 @@ for epoch in range(300):
     print("Test ACC= ", test_acc)
     writer.add_scalars('data/Acc', {'train': total_correct / (batch_size * 64 * 64 * len(train_dataloader)),
                                    'val': test_acc}, epoch)
-	if epoch % 10 == 0:
-		torch.save(model.state_dict(), os.path.join("state.pkl"))
+    if epoch % 10 == 0 :
+        torch.save(model.state_dict(), os.path.join("state.pkl"))
     
 
 ##%%
