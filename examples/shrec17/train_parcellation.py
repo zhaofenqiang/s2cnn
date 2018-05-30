@@ -23,9 +23,9 @@ import importlib.machinery
 import numpy as np
 from tensorboardX import SummaryWriter
 
-writer = SummaryWriter('log/dataset64_1fold_4layer_with_dp')
+writer = SummaryWriter('log/dataset164_3_30_30_30_36_densenet')
 
-batch_size = 4
+batch_size = 2
 learning_rate = 0.5  
 num_workers = 4
 wd = 0.0001
@@ -63,9 +63,11 @@ loader.exec_module(mod)
 model = mod.Model()
 model.cuda()
 
-train_dataset = SphereSurf("/media/zfq/WinE/unc/zhengwang/dataset_64/train")
+print("{} paramerters in total".format(sum(x.numel() for x in model.parameters())))
+
+train_dataset = SphereSurf("/media/zfq/WinE/unc/zhengwang/dataset1_64/train")
 train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers, pin_memory=False)
-test_dataset = SphereSurf("/media/zfq/WinE/unc/zhengwang/dataset_64/val")
+test_dataset = SphereSurf("/media/zfq/WinE/unc/zhengwang/dataset1_64/val")
 test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True)
  
 optimizer = torch.optim.SGD(model.parameters(), lr=0, momentum=0.9, weight_decay=wd)
@@ -88,7 +90,7 @@ def train_step(data, target):
     return loss.item(), correct.item()
 
 def get_learning_rate(epoch):
-    limits = [60, 120]
+    limits = [80, 160]
     lrs = [1, 0.1, 0.01]
     assert len(lrs) == len(limits) + 1
     for lim, lr in zip(limits, lrs):

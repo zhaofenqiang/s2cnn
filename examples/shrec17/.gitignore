@@ -7,3 +7,5 @@ test_perturbed
 val_perturbed
 test_normal
 val_normal
+./my_run
+./log
